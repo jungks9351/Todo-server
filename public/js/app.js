@@ -157,12 +157,37 @@ $inputTodo.onkeyup = e => {
 
 
 //개별 체크박스 이벤트
+// $todos.onchange = e => {
+//   // 현재 클릭한 체크박스의 id를 획득하기 위한 변수
+//   const newId = e.target.parentNode.id;
+//   //현재 클릭한 체크박스의 checked 상태를 server에 반영
+//   request.patch(`/todos/${newId}`, { completed: e.target.checked });
+// };
+
 $todos.onchange = e => {
-  // 현재 클릭한 체크박스의 id를 획득하기 위한 변수
-  const newId = e.target.parentNode.id;
-  //현재 클릭한 체크박스의 checked 상태를 server에 반영
-  request.patch(`/todos/${newId}`, { completed: e.target.checked });
-};
+
+const newId = e.target.parentNode.id;
+
+const xhr = new XMLHttpRequest();
+
+xhr.open('PATCH', `/todos/${newId}`)
+
+xhr.setRequestHeader('content-type', 'application/json');
+
+xhr.send(JSON.stringify({completed: e.target.checked}));
+
+xhr.onload = () => {
+   
+   if (xhr.status === 200) {
+
+      const res = JSON.parse(xhr.response);
+
+      todos = res;
+
+      render();
+   }
+}
+}
 
 // // 전체선택 체크박스 이벤트
 // $completeAll.onchange = e => {
