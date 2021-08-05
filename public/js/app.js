@@ -156,14 +156,13 @@ $inputTodo.onkeyup = e => {
    }
 
 
-// 개별 체크박스 이벤트
-// $todos.onchange = e => {
-//   // 현재 클릭한 체크박스의 id를 획득하기 위한 변수
-//   const newId = e.target.parentNode.id;
-
-//   // 현재 클릭한 체크박스의 checked 상태를 server에 반영
-// //   request.patch(`/todos/${newId}`, { completed: e.target.checked });
-// // };
+//개별 체크박스 이벤트
+$todos.onchange = e => {
+  // 현재 클릭한 체크박스의 id를 획득하기 위한 변수
+  const newId = e.target.parentNode.id;
+  //현재 클릭한 체크박스의 checked 상태를 server에 반영
+  request.patch(`/todos/${newId}`, { completed: e.target.checked });
+};
 
 // // 전체선택 체크박스 이벤트
 // $completeAll.onchange = e => {
@@ -269,8 +268,31 @@ $todos.onclick = e => {
          console.error(xhr.status);
       }
    }
+}
 
+// completed 가 ture인 전체 요소 삭제 이벤트
+$btn.onclick = e => {
 
+   const xhr = new XMLHttpRequest();
+
+   xhr.open('DELETE', '/todos/completed')
+
+   xhr.send();
+
+   xhr.onload = () => {
+      if (xhr.status === 200) {
+         console.log(xhr.response);
+         console.log(todos);
+         const res = JSON.parse(xhr.response);
+         
+         todos = res;
+         
+         render();
+      }
+      else {
+         console.error(xhr.status);
+      }
+   }
 }
 
 $nav.onclick = e => {
