@@ -144,6 +144,7 @@ $inputTodo.onkeyup = e => {
    //응답해보자 프로퍼티에 할당하자
    xhr.onload = () => {
       if (xhr.status ===200) {
+         console.log(xhr.response);
          const res = JSON.parse(xhr.response);
          todos = res;
          render();
@@ -153,6 +154,7 @@ $inputTodo.onkeyup = e => {
          }
       }
    }
+
 
 // 개별 체크박스 이벤트
 // $todos.onchange = e => {
@@ -234,11 +236,42 @@ $completeAll.onclick = e => {
    }
 }
 
-// 전체 삭제 이벤트
-$btn.onclick = e => {
-  // completed가 true인 모든 요소 server에서 삭제
-  request.delete('/todos/completed');
-};
+// // 전체 삭제 이벤트
+// $btn.onclick = e => {
+//   // completed가 true인 모든 요소 server에서 삭제
+//   request.delete('/todos/completed');
+// };
+
+// 개별 삭제 이벤트
+
+$todos.onclick = e => {
+   // .remove-todo 를 갖지 않으면 반환
+   if (!e.target.matches('.remove-todo')) return;
+   // id를 통해 삭제하기 위해 id 변수 생성
+   const id = e.target.parentNode.id;
+   // xhr 객체 생성
+   const xhr =  new XMLHttpRequest();
+   // 초기화
+   xhr.open('DELETE', `/todos/${id}`)
+   // 요청 전송
+   xhr.send()
+   // 응답
+   xhr.onload = () => {
+      if (xhr.status === 200) {
+         //반응 역직렬화
+         const res = JSON.parse(xhr.response);
+         //갱신
+         todos = res;
+         //갱신된 값 할당
+         render();
+      }
+      else {
+         console.error(xhr.status);
+      }
+   }
+
+
+}
 
 $nav.onclick = e => {
   // active 클래스 모두 제거
