@@ -1,4 +1,3 @@
-
 // States
 let todos = [];
 let navState = 'all';
