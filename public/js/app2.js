@@ -159,12 +159,6 @@ $completeAll.onclick = e => {
    }
 }
 
-// // 전체 삭제 이벤트
-// $btn.onclick = e => {
-//   // completed가 true인 모든 요소 server에서 삭제
-//   request.delete('/todos/completed');
-// };
-
 // 개별 삭제 이벤트
 
 $todos.onclick = e => {
